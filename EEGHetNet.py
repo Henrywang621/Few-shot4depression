@@ -7,7 +7,7 @@ import time
 from tensorflow.keras import regularizers
 tf.keras.backend.set_floatx('float32')
 
-class EEGHetNet(tf.keras.Model):
+class EEGFSNet(tf.keras.Model):
 
     def __init__(self,
                 dims_inf = [32,32,32],
@@ -20,7 +20,7 @@ class EEGHetNet(tf.keras.Model):
                 merge = False,
                 dropout = 0.0):
         
-        super(EEGHetNet, self).__init__()
+        super(EEGFSNet, self).__init__()
         self.enc_type  = "None"
 
         if len(block) == 1:
