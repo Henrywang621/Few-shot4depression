@@ -51,7 +51,7 @@ EEGFS_net.compile(loss=loss_object,optimizer=optimizer,metrics=['accuracy'])
 
 #--------Load the data----------------
 
-# subjects_Mod = list(range(53))
+subjects_Mod = list(range(53))
 subjects_Pred = list(range(122))
 # subjects_ours = {'F': [1, 10, 11], 'H': [11, 12, 13]}
 
