@@ -51,8 +51,8 @@ EEGFS_net.compile(loss=loss_object,optimizer=optimizer,metrics=['accuracy'])
 
 #--------Load the data----------------
 
-subjects_Mod = list(range(53))
-subjects_Pred = list(range(122))
+# subjects_Mod = list(range(53))
+# subjects_Pred = list(range(122))
 # subjects_OUND = {'F': [1, 10, 11], 'H': [11, 12, 13]}
 
 # subjects_OUND = {'F': [1, 10], 'H': [11, 12]}
@@ -63,17 +63,17 @@ subjects_OUND = {'F': [1,10,11], 'H': [11,12,13]}
 
 subjects_val = {'F': [12], 'H': [14]}
 
-datasets_train = {'MODMA': load_EEGdata4MODMA,
-                  'PREDICT': load_EEGdata4PREDICT,
-                  'OUND': loadEEGdata_OUND,
-                 }
+# datasets_train = {'MODMA': load_EEGdata4MODMA,
+#                   'PREDICT': load_EEGdata4PREDICT,
+#                   'OUND': loadEEGdata_OUND,
+#                  }
 
 # datasets_train = {'PREDICT': load_EEGdata4PREDICT,
 #                   'OUND': loadEEGdata_OUND,
 #                  }
 
-# datasets_train = {'OUND': loadEEGdata_OUND,
-#                  }
+datasets_train = {'OUND': loadEEGdata_OUND,
+                 }
 # datasets_train = {'PREDICT': load_EEGdata4PREDICT,
 #             }
 
@@ -85,10 +85,10 @@ datasets_val = {'OUND': loadEEGdata_OUND,
 # num_trials = 100
 
 test_mode = True
-train_gen =  minibatch_generator(args.s_shots,args.q_shots, False, subjects_OUND = subjects_OUND, subjects_Pred = subjects_Pred, subjects_Mod = subjects_Mod, control_group = [1, 2], num_trials= 50, trial_length = 3000, datasets = datasets_train)
+# train_gen =  minibatch_generator(args.s_shots,args.q_shots, False, subjects_OUND = subjects_OUND, subjects_Pred = subjects_Pred, subjects_Mod = subjects_Mod, control_group = [1, 2], num_trials= 50, trial_length = 3000, datasets = datasets_train)
 # train_gen =  minibatch_generator(args.s_shots,args.q_shots, False, subjects_OUND = subjects_OUND, subjects_Pred = subjects_Pred, control_group = [1, 2], num_trials= 100, trial_length = 3000, datasets = datasets_train)
 # train_gen =  minibatch_generator(args.s_shots,args.q_shots, False, subjects_OUND = subjects_OUND, control_group = [1, 2], num_trials= 5, trial_length = 3000, datasets = datasets_train)
-# train_gen =  minibatch_generator(args.s_shots,args.q_shots, False, subjects_OUND = subjects_OUND, control_group = [1], num_trials= 100, trial_length = 3000, datasets = datasets_train)
+train_gen =  minibatch_generator(args.s_shots,args.q_shots, False, subjects_OUND = subjects_OUND, control_group = [1, 2], num_trials= 100, trial_length = 3000, datasets = datasets_train)
 val_gen =  minibatch_generator(args.s_shots,args.q_shots, False, subjects_OUND = subjects_val, control_group = [1, 2], num_trials= 100, trial_length = 3000, datasets = datasets_val)
 
 
@@ -113,7 +113,8 @@ history = EEGFS_net.fit(              x  = train_gen,
                       callbacks        = callbacks)
 
 # EEGFS_net.save('saved_EEGHetNetOUNDplustwoD2',save_format='tf')
-EEGFS_net.save('saved_EEGHetNetOUND6SplusPred',save_format='tf')
+# EEGFS_net.save('saved_EEGHetNetOUND6SplusPred',save_format='tf')
+EEGFS_net.save('saved_EEGHetNetOUND6S',save_format='tf')
 
 del(train_gen)
 del(val_gen)
