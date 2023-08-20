@@ -145,7 +145,7 @@ def loadEEGdata_OUND(subjects, control_groups = [1, 2], num_trails = 100, trial_
     '''
     data = []
     labels = []
-    dir_path = '/home/data/ourDepression_small/'
+    dir_path = '/home/data/OUNDDepression_small/'
 
     subjects_type = list(subjects.keys())
     # print(subjects_type)
@@ -213,7 +213,7 @@ def load_EEGdata4PREDICT(subjects_ids = list(range(122)), trial_length = 6000, n
         if os.path.exists(path):
             file = sio.loadmat(path)
 
-            # To make the number of channels be 68, which is same as our depression dataset
+            # To make the number of channels be 68, which is same as OUND depression dataset
             if file['EEG']['data'][0][0].shape[0] == 66:
                 file_exp = np.vstack((file['EEG']['data'][0][0][0], file['EEG']['data'][0][0]))
                 file_exp = np.vstack((file_exp, file_exp[-1]))
@@ -349,11 +349,11 @@ def minibatch_generator(num_samples_sup = 20, num_samples_que = 20, test_mode = 
                 if dataset == 'OUND':
                     # control_group = random.sample(control_group, 1)
                     data_X, labels_y = datasets[dataset](subjects_OUND, control_group, num_trials, trial_length)
-                    sample_ourids = random.sample(range(data_X.shape[0]), total_num_samples)
+                    sample_OUNDids = random.sample(range(data_X.shape[0]), total_num_samples)
 
-                    data_X = data_X[sample_ourids]
-                    # print(labels_y[sample_ourids].shape)
-                    labels_y = labels_y[sample_ourids]
+                    data_X = data_X[sample_OUNDids]
+                    # print(labels_y[sample_OUNDids].shape)
+                    labels_y = labels_y[sample_OUNDids]
                     mini_batch_que.append(data_X[:num_samples_que, :, :])
                     mini_batch_sup.append(data_X[num_samples_que:, :, :])
                     labels_sup.append(labels_y[num_samples_que:, :])
