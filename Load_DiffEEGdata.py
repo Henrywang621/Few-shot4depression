@@ -69,7 +69,7 @@ def construct_Xr(event, data):
     return x, y
 
 def read_edffile(subject_id, current_run):
-    base_path = '/home/henrywang/PythonPractice/testCP_RCNN/datasets/BCI2000/S{0:03}/S{1:03}R{2:02}.edf'
+    base_path = '/home/datasets/BCI2000/S{0:03}/S{1:03}R{2:02}.edf'
     path = base_path.format(subject_id, subject_id, current_run)
     raw = read_raw_edf(path, preload=True, verbose=False)
     onset = raw.annotations.onset
@@ -137,7 +137,7 @@ def read_EEG(filename):
     processed_data = standardizeData(data)
     return processed_data
 
-def loadEEGdata_ours(subjects, control_groups = [1, 2], num_trails = 100, trial_length = 3000):
+def loadEEGdata_OUND(subjects, control_groups = [1, 2], num_trails = 100, trial_length = 3000):
     '''
     subjects: the subjects you want to use to form the dataset. It should be a dictionary.
     control_groups: there are two separate control recordings at different dates.
@@ -145,7 +145,7 @@ def loadEEGdata_ours(subjects, control_groups = [1, 2], num_trails = 100, trial_
     '''
     data = []
     labels = []
-    dir_path = '/home/henrywang/PythonPractice/timehetnet/data/ourDepression_small/'
+    dir_path = '/home/data/ourDepression_small/'
 
     subjects_type = list(subjects.keys())
     # print(subjects_type)
@@ -193,8 +193,8 @@ def loadEEGdata_ours(subjects, control_groups = [1, 2], num_trails = 100, trial_
 
 def load_EEGdata4PREDICT(subjects_ids = list(range(122)), trial_length = 6000, num_trials = 100, test_mode = False):
     # load EEG data of the PREDICT, also called Depression Rest, dataset.
-    EEGfile_path = '/home/henrywang/PythonPractice/timehetnet/data/Depression_mat/Matlab Files/'
-    xlsxfile_path = '/home/henrywang/PythonPractice/timehetnet/data/Depression_mat/Data_4_Import_REST.xlsx'
+    EEGfile_path = '/home/data/Depression_mat/Matlab Files/'
+    xlsxfile_path = '/home/data/Depression_mat/Data_4_Import_REST.xlsx'
     xlsxfile = pd.read_excel(xlsxfile_path)
     id_BDI = xlsxfile[['id', 'BDI']] 
     data = []
@@ -250,8 +250,8 @@ def load_EEGdata4PREDICT(subjects_ids = list(range(122)), trial_length = 6000, n
 
 #subjects_ids from 0 to 52
 def load_EEGdata4MODMA(subjects_ids = list(range(53)), trial_length = 750, num_trials=100, test_mode = False):
-    EEGfile_path = '/home/henrywang/PythonPractice/timehetnet/data/MODMA/'
-    xlsxfile_path = '/home/henrywang/PythonPractice/timehetnet/data/MODMA/subjects_information_EEG.xlsx'
+    EEGfile_path = '/home/data/MODMA/'
+    xlsxfile_path = '/home/data/MODMA/subjects_information_EEG.xlsx'
     xlsxfile = pd.read_excel(xlsxfile_path)
     all_ids_type = xlsxfile[['subject_id', 'type']]
 
@@ -291,7 +291,7 @@ def load_EEGdata4MODMA(subjects_ids = list(range(53)), trial_length = 750, num_t
             continue
     return np.array(data)[:,:,:68], getOneHotLabels(np.array(labels))
 
-def minibatch_generator(num_samples_sup = 20, num_samples_que = 20, test_mode = True, subjects_ours = None, subjects_Pred = None, subject_Physio = None,
+def minibatch_generator(num_samples_sup = 20, num_samples_que = 20, test_mode = True, subjects_OUND = None, subjects_Pred = None, subject_Physio = None,
                         subjects_Mod = None, control_group = None, num_trials =None, num_trials_MOD = None, num_trials_Pred = None, trial_length = None, datasets = None, random_seed = None):
     
     
@@ -301,8 +301,8 @@ def minibatch_generator(num_samples_sup = 20, num_samples_que = 20, test_mode = 
         labels_que = []
         labels_sup = [] 
 
-        if datasets == 'OurDepressionData':
-            data_X, labels_y = loadEEGdata_ours(subjects_ours, control_group, num_trials, trial_length)     
+        if datasets == 'OUND':
+            data_X, labels_y = loadEEGdata_OUND(subjects_OUND, control_group, num_trials, trial_length)     
 
         elif datasets == 'PREDICT':
             data_X, labels_y = load_EEGdata4PREDICT(subjects_Pred, trial_length, num_trials = num_trials_Pred, test_mode=test_mode)
@@ -346,9 +346,9 @@ def minibatch_generator(num_samples_sup = 20, num_samples_que = 20, test_mode = 
             labels_sup = [] 
             total_num_samples = num_samples_sup + num_samples_que
             for dataset in datasets:
-                if dataset == 'OurDepressionData':
+                if dataset == 'OUND':
                     # control_group = random.sample(control_group, 1)
-                    data_X, labels_y = datasets[dataset](subjects_ours, control_group, num_trials, trial_length)
+                    data_X, labels_y = datasets[dataset](subjects_OUND, control_group, num_trials, trial_length)
                     sample_ourids = random.sample(range(data_X.shape[0]), total_num_samples)
 
                     data_X = data_X[sample_ourids]
